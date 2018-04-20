@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
             // or live (ENVIRONMENT_PRODUCTION)
-            .environment( PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+            .environment( PayPalConfiguration.ENVIRONMENT_SANDBOX)  // because we are using sandbox to test .
 
-            .clientId("<YOUR_CLIENT_ID>");
+            .clientId(Config.PAYPAL_CLIENT_ID); // my client id from my sandbox account.
 
 
 
@@ -70,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
             PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
             if (confirm != null) {
                 try {
-                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
+                    String paymentdetails = confirm.toJSONObject().toString( 4 );
+
+                    startActivity( new Intent( MainActivity.this, PaymentDetails.class )
+                            .putExtra( "Payment Details", paymentdetails ) );
+
+
+
+
 
                     // TODO: send 'confirm' to your server for verification.
                     // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
